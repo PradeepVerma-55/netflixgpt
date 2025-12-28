@@ -1,8 +1,8 @@
-import React from "react";
+import {useState} from "react";
 import Header from "./Header";
 
 const Login = () => {
-  const [isSignInForm, setIsSignInForm] = React.useState(true);
+  const [isSignInForm, setIsSignInForm] = useState(true);
 
   const toggleSignUp = () => {
     setIsSignInForm(!isSignInForm);
