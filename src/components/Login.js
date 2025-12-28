@@ -2,6 +2,12 @@ import React from "react";
 import Header from "./Header";
 
 const Login = () => {
+  const [isSignInForm, setIsSignInForm] = React.useState(true);
+
+  const toggleSignUp = () => {
+    setIsSignInForm(!isSignInForm);
+  };
+
   return (
     <div>
       <div>
@@ -17,21 +23,49 @@ const Login = () => {
         className="w-3/12 absolute p-12 bg-black
         my-36 mx-auto right-0 left-0
         text-white rounded-lg bg-opacity-85">
-        <h1 className="font-bold text-3xl py-4">Sign In</h1>
-        <input type="text" placeholder="Email Address"
-         className="p-4 my-2 w-full bg-gray-700" />
+        <h1 className="font-bold text-3xl py-4">
+          {isSignInForm ? "Sign In" : "Sign Up"}
+        </h1>
 
-        <input type="text" placeholder="Password" 
-         className="p-4 my-2 w-full bg-gray-700" />
+        {!isSignInForm && (
+          <input
+            type="text"
+            placeholder="Full Name"
+            className="p-4 my-2 w-full bg-gray-700"
+          />
+        )}
 
-        <button className="p-4 my-4 bg-red-700 
-        w-full rounded-lg">Sign In</button>
-      
-        <p>New to Netflix? 
-          <span className="text-blue-600
-            cursor-pointer"> Sign Up Now</span></p>
+        <input
+          type="text"
+          placeholder="Email Address"
+          className="p-4 my-2 w-full bg-gray-700"
+        />
+
+        <input
+          type="text"
+          placeholder="Password"
+          className="p-4 my-2 w-full bg-gray-700"
+        />
+
+        <button
+          className="p-4 my-4 bg-red-700 
+        w-full rounded-lg"
+        >
+          {isSignInForm ? "Sign In" : "Sign Up"}
+        </button>
+
+        <p>
+          {isSignInForm ? "New to Netflix? " : "Already have an account? "}
+          <span
+            className="text-blue-600
+            cursor-pointer"
+            onClick={toggleSignUp}
+          >
+            {" "}
+            {isSignInForm ? "Sign Up Now" : "Sign In Now"}
+          </span>
+        </p>
       </form>
-
     </div>
   );
 };

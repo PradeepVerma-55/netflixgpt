@@ -14,3 +14,5 @@
       - search bar
       - Movie Suggestions
 
+# Form validation 
+ - Formik Library 
