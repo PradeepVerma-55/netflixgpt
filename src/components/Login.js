@@ -1,11 +1,17 @@
 import { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
-
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-
+  const navigate = useNavigate();
+  const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
 
@@ -20,6 +26,49 @@ const Login = () => {
     setErrorMessage(message);
     if (message) return;
     // Handle form submission logic here
+    if (!isSignInForm) {
+      // Sign Up logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value,
+        name.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log("User signed up:", user);
+          navigate("/browse");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          navigate("/");
+          setErrorMessage({ firebase: errorMessage });
+        });
+    } else {
+      // Sign In logic
+
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          navigate("/browse");
+          console.log("User signed in:", user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          navigate("/");
+          setErrorMessage({ firebase: errorMessage });
+        });
+    }
   };
 
   return (
@@ -46,6 +95,7 @@ const Login = () => {
           <input
             type="text"
             placeholder="Full Name"
+            ref={name}
             className="p-4 my-2 w-full bg-gray-700"
           />
         )}
@@ -80,6 +130,11 @@ const Login = () => {
         >
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
+        {errorMessage?.firebase && (
+          <p className="text-red-500 font-bold text-lg py-2">
+            {errorMessage?.firebase}
+          </p>
+        )}
 
         <p>
           {isSignInForm ? "New to Netflix? " : "Already have an account? "}
