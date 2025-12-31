@@ -10,15 +10,14 @@ import {
 import { updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import {USER_AVATAR} from "../utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const USER_AVATAR =
-    "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png";
-
+  
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
